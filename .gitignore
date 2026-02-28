@@ -1,0 +1,10 @@
+runs/
+images/
+labels/
+train/
+val/
+datasets/
+*.jpg
+*.png
+*.jpeg
+__pycache__/

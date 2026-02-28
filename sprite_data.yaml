@@ -1,0 +1,9 @@
+path: C:/Tanzeel/Python Object Detection/sprite_dataset
+
+train: images/train
+val: images/val
+
+nc: 1
+
+names:
+  0: sprite
