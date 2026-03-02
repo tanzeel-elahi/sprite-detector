@@ -262,6 +262,9 @@ html, body, [data-testid="stAppViewContainer"] {
     color: #00e676 !important;
     font-family: 'DM Sans', sans-serif !important;
 }
+button[data-testid="stBaseButton-elementToolbar"] {
+    display: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -294,8 +297,6 @@ uploaded_file = st.file_uploader(
     type=["jpg", "png", "jpeg"],
     label_visibility="collapsed",
 )
-st.markdown('<div class="conf-note">⚙ Detection confidence threshold: 60% &nbsp;|&nbsp; Supported formats: JPG, PNG, JPEG</div>', unsafe_allow_html=True)
-
 
 # ── Detection ──────────────────────────────────────────────────────────────────
 if uploaded_file:
@@ -326,28 +327,34 @@ if uploaded_file:
     else:
         status_cls, status_icon, status_text, badge = "status-crit", "✕", "Critical — immediate restocking required", "CRITICAL"
 
-    # ── Metrics ───────────────────────────────────────────────────────────────
-    st.markdown(f"""
-    <div class="metrics-row">
-        <div class="metric-card" style="--accent:#00e676;">
-            <div class="metric-label">Sprite Bottles</div>
-            <div class="metric-value">{sprite_count}</div>
-            <div class="metric-sub">detected in frame</div>
+    # ── Two column layout ─────────────────────────────────────────────────────
+    left_col, right_col = st.columns([1, 1.6])
+
+    with left_col:
+        # Metrics
+        st.markdown(f"""
+        <div class="metrics-row" style="grid-template-columns: 1fr; margin-top: 0;">
+            <div class="metric-card" style="--accent:#00e676;">
+                <div class="metric-label">Sprite Bottles</div>
+                <div class="metric-value">{sprite_count}</div>
+                <div class="metric-sub">detected in frame</div>
+            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-    # ── Status banner ─────────────────────────────────────────────────────────
-    st.markdown(f"""
-    <div class="status-banner {status_cls}">
-        <div class="status-dot"></div>
-        <span>{status_icon}&nbsp; {status_text}</span>
-        <span class="status-badge">{badge}</span>
-    </div>
-    """, unsafe_allow_html=True)
 
-    st.markdown('<div class="image-section-label">Shelf Image</div>', unsafe_allow_html=True)
-    st.image(image_rgb, use_container_width=True)
+    with right_col:
+        # Status error/warning above image
+        st.markdown(f"""
+        <div class="status-banner {status_cls}" style="margin-bottom: 1rem;">
+            <div class="status-dot"></div>
+            <span>{status_icon}&nbsp; {status_text}</span>
+            <span class="status-badge">{badge}</span>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown('<div class="image-section-label">Shelf Image</div>', unsafe_allow_html=True)
+        st.image(image_rgb, use_container_width=True)
 
 else:
     # ── Empty state ───────────────────────────────────────────────────────────
@@ -365,4 +372,3 @@ else:
         <div style="font-size:0.85rem; color:#374151;">Upload a shelf image above to begin detection</div>
     </div>
     """, unsafe_allow_html=True)
-
