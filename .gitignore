@@ -1,6 +1,11 @@
 runs/
+preview_images/
 images/
 labels/
+sprite_dataset/
+chair_dataset/
+testing/
+auto_labels/
 train/
 val/
 datasets/
@@ -8,3 +13,7 @@ datasets/
 *.png
 *.jpeg
 __pycache__/
+*.pth
+sam_vit_h_4b8939.pth
+yolov8n.pt
+*.pyc
